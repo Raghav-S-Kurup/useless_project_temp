@@ -1,0 +1,14 @@
+{
+  "name": "loaf-o-meter",
+  "version": "1.0.0",
+  "description": "Rates how perfect a cat loaf is, using the Claude API for image analysis.",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "dotenv": "^16.4.5"
+  }
+}

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loaf-o-Meter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400..700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --orange: #FF7A29;
+    --orange-deep: #E8590C;
+    --orange-pale: #FFE3CC;
+    --cream: #FFFBF3;
+    --white: #FFFFFF;
+    --ink: #2A1C14;
+    --ink-soft: #6b5548;
+    --gold: #FFC93C;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html,body{
+    margin:0;
+    padding:0;
+    background: var(--cream);
+    background-image:
+      radial-gradient(circle at 12% 18%, rgba(255,122,41,0.10) 0, transparent 40%),
+      radial-gradient(circle at 88% 8%, rgba(255,201,60,0.16) 0, transparent 38%),
+      radial-gradient(circle at 92% 78%, rgba(255,122,41,0.08) 0, transparent 45%);
+    color: var(--ink);
+    font-family: 'Baloo 2', sans-serif;
+    min-height: 100vh;
+  }
+
+  .wrap{
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  header{
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    text-align:center;
+    margin-bottom: 40px;
+  }
+
+  .logo-stage{
+    width: 168px;
+    height: 168px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor: pointer;
+    margin-bottom: 4px;
+  }
+
+  .logo-stage svg{ width: 100%; height: 100%; overflow: visible; }
+
+  .tail-pixel{ transition: transform 0.55s cubic-bezier(.34,1.56,.64,1); }
+  .t1{ transform: translate(0,0) rotate(28deg); transform-origin: 100px 148px; }
+  .t2{ transform: translate(0,0) rotate(55deg); transform-origin: 116px 138px; }
+  .t3{ transform: translate(0,0) rotate(85deg); transform-origin: 128px 122px; }
+  .logo-stage:hover .t1{ transform: translate(-2px,4px) rotate(2deg); }
+  .logo-stage:hover .t2{ transform: translate(-2px,4px) rotate(2deg); }
+  .logo-stage:hover .t3{ transform: translate(-2px,4px) rotate(2deg); }
+
+  h1.brand{
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: 52px;
+    margin: 0;
+    color: var(--orange-deep);
+    letter-spacing: 0.5px;
+    text-shadow: 3px 3px 0 var(--ink);
+  }
+
+  p.tagline{
+    font-size: 18px;
+    color: var(--ink-soft);
+    margin: 10px 0 0;
+    font-weight: 600;
+  }
+
+  .card{
+    background: var(--white);
+    border: 3px solid var(--ink);
+    border-radius: 28px;
+    box-shadow: 7px 7px 0 var(--ink);
+    padding: 32px;
+    margin-bottom: 32px;
+  }
+
+  .dropzone{
+    border: 3px dashed var(--orange);
+    border-radius: 22px;
+    background: var(--orange-pale);
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+    position: relative;
+    display:block;
+  }
+  .dropzone:hover{ background: #ffd9b3; }
+  .dropzone.drag{ background: #ffcf9e; transform: scale(1.01); }
+
+  .dropzone input[type=file]{
+    position:absolute;
+    inset:0;
+    opacity:0;
+    cursor:pointer;
+  }
+
+  .dz-icon{ font-size: 48px; display:block; margin-bottom: 8px; }
+
+  .dz-text{
+    font-family: 'Fredoka', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--orange-deep);
+    margin: 0 0 4px;
+  }
+  .dz-sub{ font-size: 14px; color: var(--ink-soft); margin:0; font-weight:500; }
+
+  .preview-wrap{
+    margin-top: 20px;
+    text-align:center;
+    display:none;
+  }
+  .preview-wrap img{
+    max-width: 100%;
+    max-height: 320px;
+    border-radius: 18px;
+    border: 3px solid var(--ink);
+    box-shadow: 5px 5px 0 var(--ink);
+  }
+
+  .btn{
+    font-family: 'Fredoka', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--white);
+    background: var(--orange-deep);
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+    padding: 14px 36px;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--ink);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    display:block;
+    margin: 24px auto 0;
+  }
+  .btn:hover{ transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
+  .btn:active{ transform: translate(1px,1px); box-shadow: 2px 2px 0 var(--ink); }
+  .btn:disabled{ opacity:0.5; cursor:not-allowed; transform:none; box-shadow:4px 4px 0 var(--ink); }
+
+  .loading{
+    display:none;
+    text-align:center;
+    padding: 20px 0 4px;
+    font-family:'Fredoka', sans-serif;
+    font-size: 18px;
+    color: var(--orange-deep);
+    font-weight:600;
+  }
+  .loading .paw-spin{
+    display:inline-block;
+    font-size: 30px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 6px;
+  }
+  @keyframes spin{ from{ transform: rotate(0deg);} to{ transform: rotate(360deg);} }
+
+  .error-box{
+    display:none;
+    background: #FFEAE0;
+    border: 2px solid var(--orange-deep);
+    color: var(--orange-deep);
+    border-radius: 16px;
+    padding: 14px 18px;
+    font-weight: 600;
+    margin-top: 18px;
+    text-align:center;
+  }
+
+  .result{
+    display:none;
+    background: var(--white);
+    border: 3px solid var(--ink);
+    border-radius: 28px;
+    box-shadow: 7px 7px 0 var(--ink);
+    padding: 36px 32px;
+    text-align:center;
+  }
+
+  .result-score{
+    font-family:'Fredoka', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--orange-deep);
+    margin: 4px 0 6px;
+  }
+
+  .paw-row{
+    font-size: 34px;
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+  }
+  .paw-row .empty{ opacity: 0.22; }
+
+  .verdict{
+    font-family:'Fredoka', sans-serif;
+    font-size: 22px;
+    color: var(--ink);
+    margin: 10px 0 18px;
+  }
+
+  .criteria{
+    text-align:left;
+    display:grid;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .crit-item{
+    display:flex;
+    align-items:flex-start;
+    gap: 10px;
+    background: var(--cream);
+    border: 2px solid var(--ink);
+    border-radius: 14px;
+    padding: 10px 14px;
+  }
+  .crit-mark{ font-size: 20px; line-height:1.3; }
+  .crit-text b{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    display:block;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .crit-text span{
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+
+  .again-btn{ margin-top: 26px; background: var(--ink); }
+
+  footer{
+    text-align:center;
+    margin-top: 40px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+
+  @media (max-width: 560px){
+    h1.brand{ font-size: 38px; }
+    .card, .result{ padding: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="logo-stage" id="logoStage" aria-hidden="true">
+      <svg viewBox="0 0 192 192">
+        <g class="tail-pixel t1"><rect x="88" y="140" width="14" height="14" fill="#E8590C" stroke="#2A1C14" stroke-width="2"/></g>
+        <g class="tail-pixel t2"><rect x="104" y="128" width="14" height="14" fill="#FF7A29" stroke="#2A1C14" stroke-width="2"/></g>
+        <g class="tail-pixel t3"><rect x="118" y="112" width="14" height="14" fill="#FF7A29" stroke="#2A1C14" stroke-width="2"/></g>
+
+        <rect x="30" y="96" width="132" height="46" rx="10" fill="#FF7A29" stroke="#2A1C14" stroke-width="4"/>
+        <rect x="30" y="96" width="132" height="14" rx="7" fill="#FFA35C"/>
+
+        <rect x="46" y="134" width="16" height="10" fill="#E8590C" stroke="#2A1C14" stroke-width="3"/>
+        <rect x="130" y="134" width="16" height="10" fill="#E8590C" stroke="#2A1C14" stroke-width="3"/>
+
+        <rect x="54" y="52" width="70" height="52" rx="14" fill="#FF9143" stroke="#2A1C14" stroke-width="4"/>
+        <polygon points="54,58 54,30 78,54" fill="#FF9143" stroke="#2A1C14" stroke-width="4" stroke-linejoin="round"/>
+        <polygon points="124,58 124,30 100,54" fill="#FF9143" stroke="#2A1C14" stroke-width="4" stroke-linejoin="round"/>
+        <polygon points="60,52 60,38 70,52" fill="#FFC9A6"/>
+        <polygon points="118,52 118,38 108,52" fill="#FFC9A6"/>
+
+        <circle cx="76" cy="78" r="5" fill="#2A1C14"/>
+        <circle cx="104" cy="78" r="5" fill="#2A1C14"/>
+        <path d="M84 90 Q90 96 96 90" stroke="#2A1C14" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <line x1="60" y1="86" x2="42" y2="84" stroke="#2A1C14" stroke-width="2"/>
+        <line x1="60" y1="90" x2="42" y2="92" stroke="#2A1C14" stroke-width="2"/>
+        <line x1="118" y1="86" x2="136" y2="84" stroke="#2A1C14" stroke-width="2"/>
+        <line x1="118" y1="90" x2="136" y2="92" stroke="#2A1C14" stroke-width="2"/>
+      </svg>
+    </div>
+    <h1 class="brand">Loaf-o-Meter</h1>
+    <p class="tagline">Where floof meets physics. Rate thy loaf.</p>
+  </header>
+
+  <div class="card">
+    <label class="dropzone" id="dropzone">
+      <input type="file" id="fileInput" accept="image/*">
+      <span class="dz-icon">🍞</span>
+      <p class="dz-text">Drop your cat loaf here</p>
+      <p class="dz-sub">or tap to browse — the loaf shall be judged</p>
+    </label>
+
+    <div class="preview-wrap" id="previewWrap">
+      <img id="previewImg" alt="Uploaded cat loaf preview">
+    </div>
+
+    <button class="btn" id="rateBtn" disabled>Rate my loaf</button>
+
+    <div class="loading" id="loadingBox">
+      <span class="paw-spin">🐾</span>
+      <div id="loadingMsg">Consulting the loaf council...</div>
+    </div>
+
+    <div class="error-box" id="errorBox"></div>
+  </div>
+
+  <div class="result" id="resultBox">
+    <div id="resultScoreLine" class="result-score">7 paws out of 10</div>
+    <div class="paw-row" id="pawRow"></div>
+    <div class="verdict" id="verdictText">A respectable loaf, if a touch fidgety.</div>
+    <div class="criteria" id="criteriaList"></div>
+    <button class="btn again-btn" id="againBtn">Judge another loaf</button>
+  </div>
+
+  <footer>made with love, judged without mercy</footer>
+</div>
+
+<script>
+const fileInput = document.getElementById('fileInput');
+const dropzone = document.getElementById('dropzone');
+const previewWrap = document.getElementById('previewWrap');
+const previewImg = document.getElementById('previewImg');
+const rateBtn = document.getElementById('rateBtn');
+const loadingBox = document.getElementById('loadingBox');
+const loadingMsg = document.getElementById('loadingMsg');
+const errorBox = document.getElementById('errorBox');
+const resultBox = document.getElementById('resultBox');
+const againBtn = document.getElementById('againBtn');
+
+let currentBase64 = null;
+let currentMediaType = null;
+
+const loadingLines = [
+  "Consulting the loaf council...",
+  "Measuring paw visibility...",
+  "Checking tail furl integrity...",
+  "Assessing head-tilt geometry...",
+  "Judging the facial serenity...",
+  "Finalizing the loaf verdict..."
+];
+let loadingInterval = null;
+
+function resetToUpload(){
+  resultBox.style.display = 'none';
+  errorBox.style.display = 'none';
+  previewWrap.style.display = 'none';
+  previewImg.src = '';
+  fileInput.value = '';
+  currentBase64 = null;
+  currentMediaType = null;
+  rateBtn.disabled = true;
+  dropzone.style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+['dragover','dragenter'].forEach(evt=>{
+  dropzone.addEventListener(evt, (e)=>{ e.preventDefault(); dropzone.classList.add('drag'); });
+});
+['dragleave','drop'].forEach(evt=>{
+  dropzone.addEventListener(evt, ()=>{ dropzone.classList.remove('drag'); });
+});
+
+fileInput.addEventListener('change', () => {
+  const file = fileInput.files[0];
+  if(!file) return;
+  if(!file.type.startsWith('image/')){
+    showError("That doesn't look like an image. Try a photo of your loaf.");
+    return;
+  }
+  errorBox.style.display = 'none';
+  const reader = new FileReader();
+  reader.onload = () => {
+    const result = reader.result;
+    currentMediaType = file.type;
+    currentBase64 = result.split(',')[1];
+    previewImg.src = result;
+    previewWrap.style.display = 'block';
+    rateBtn.disabled = false;
+    resultBox.style.display = 'none';
+  };
+  reader.onerror = () => showError("Couldn't read that image. Try another file.");
+  reader.readAsDataURL(file);
+});
+
+function showError(msg){
+  errorBox.textContent = msg;
+  errorBox.style.display = 'block';
+}
+
+function startLoading(){
+  loadingBox.style.display = 'block';
+  rateBtn.disabled = true;
+  let i = 0;
+  loadingMsg.textContent = loadingLines[0];
+  loadingInterval = setInterval(()=>{
+    i = (i+1) % loadingLines.length;
+    loadingMsg.textContent = loadingLines[i];
+  }, 1400);
+}
+
+function stopLoading(){
+  loadingBox.style.display = 'none';
+  clearInterval(loadingInterval);
+  rateBtn.disabled = false;
+}
+
+function renderPaws(score){
+  let html = '';
+  for(let i=1;i<=10;i++){
+    html += `<span class="${i<=score ? 'filled' : 'empty'}">🐾</span>`;
+  }
+  return html;
+}
+
+const critLabels = {
+  paws: "Paw concealment",
+  tail: "Tail furl",
+  head_droop: "Head posture",
+  head_straight: "Head alignment",
+  expression: "Facial serenity"
+};
+
+function renderCriteria(criteria){
+  return Object.entries(criteria).map(([key, item])=>{
+    const label = critLabels[key] || key;
+    const mark = item.pass ? '✅' : '⚠️';
+    return `<div class="crit-item">
+      <span class="crit-mark">${mark}</span>
+      <span class="crit-text"><b>${label}</b><span>${item.note}</span></span>
+    </div>`;
+  }).join('');
+}
+
+async function rateLoaf(){
+  if(!currentBase64) return;
+  startLoading();
+  errorBox.style.display = 'none';
+  resultBox.style.display = 'none';
+
+  try{
+    // Calls our own backend, which holds the Anthropic API key server-side.
+    // See server.js — it forwards this to https://api.anthropic.com/v1/messages
+    const response = await fetch('/api/rate-loaf', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image: currentBase64, mediaType: currentMediaType })
+    });
+
+    const parsed = await response.json();
+
+    if(!response.ok){
+      throw new Error(parsed.error || ('Server error ' + response.status));
+    }
+
+    let score = parseInt(parsed.score, 10);
+    if(isNaN(score)) score = 5;
+    score = Math.max(1, Math.min(10, score));
+
+    document.getElementById('resultScoreLine').textContent = score + " paw" + (score===1?"":"s") + " out of 10";
+    document.getElementById('pawRow').innerHTML = renderPaws(score);
+    document.getElementById('verdictText').textContent = parsed.verdict || "The judges are speechless.";
+    document.getElementById('criteriaList').innerHTML = renderCriteria(parsed.criteria || {});
+
+    stopLoading();
+    dropzone.style.display = 'none';
+    resultBox.style.display = 'block';
+    resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  }catch(err){
+    stopLoading();
+    showError("The loaf judge stumbled: " + err.message + ". Please try again.");
+  }
+}
+
+rateBtn.addEventListener('click', rateLoaf);
+againBtn.addEventListener('click', resetToUpload);
+</script>
+</body>
+</html>
