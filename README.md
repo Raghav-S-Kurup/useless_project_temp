@@ -43,15 +43,14 @@ For Software:
 For Software:
 
 # Screenshots (Add at least 3)
-![Screenshot1](Screenshot 2026-09-04 050005.png)
-*
+![Screenshot1](Screenshot%202026-09-04%20050005.png)
+*Drop the picture of cat making loaf position *
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot2](Screenshot%202026-09-04%20050101.png)
+*Ask to rate the loaf*
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
-
+![Screenshot3](Screenshot%202026-09-04%20050112.png)
+*The website rates the loaf according to the picture.*
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
 *Add caption explaining your workflow*
