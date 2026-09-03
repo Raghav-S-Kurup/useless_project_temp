@@ -2,47 +2,42 @@
 
 
 
-# [Project Name] 🎯
+# [Loaf-o-Meter] 🎯
 
 
 ## Basic Details
-### Team Name: [Name]
+### Team Name: [Kurup Family]
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Member 2: [Raghav S Kurup] - [ Model Engineering College]
+- Member 3: [Madhav R] - [ Model Engineering College]
 
 ### Project Description
-[2-3 lines about what your project does]
+[Loaf-o-Meter is a playful AI-powered web application that judges how perfectly a cat has achieved legendary "loaf" pose. Users upload a cat , and the app uses an image-analysis API to examine cat's posture, paws, tail, head position, and facial expression before awarding it a score out of 10.]
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+[How can we turn the simple act of judging whether a cat is "loafing" into a fun, interactive experince?]
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+[It takes the extremely important task of judging cats loaf and gives it the scientific treatment it absolutely does not deserve.]
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
+- [HTML, Java Script, CSS]
+- [React.js,Node.js,Vite]
+- [Open AI SDK, React]
+- [VS Code,Git&Git hub]
 
-For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
 
 ### Implementation
 For Software:
 # Installation
-[commands]
+[npm install]
 
 # Run
-[commands]
+[npm run]
 
 ### Project Documentation
 For Software:
@@ -61,24 +56,6 @@ For Software:
 ![Workflow](Add your workflow/architecture diagram here)
 *Add caption explaining your workflow*
 
-For Hardware:
-
-# Schematic & Circuit
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
-
-# Build Photos
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
 
 ### Project Demo
 # Video
