@@ -1,0 +1,2 @@
+git add .gitignore git commit --amend -m "Initial commit: Loaf-o-Meter"node_modules/
+.env
